@@ -1,4 +1,5 @@
 import requests
+import csv
 
 def get_playlists(user_id : str) :
 
@@ -40,17 +41,25 @@ def deezer_menu(title_list, id_list):
 def get_track_info(playlist_id):
     url = "https://api.deezer.com/playlist/" + playlist_id + "/tracks"
     
-    track_info = {}
+    track_info = [],[]
 
     while url:
         response = requests.get(url)
 
         if response.status_code == 200:
             data = response.json()
-            track_info.update({track["title"] : track["artist"]["name"] for track in data["data"]})
+            [track_info[0].append(track["title"]) for track in data["data"]]
+            [track_info[1].append(track["artist"]["name"]) for track in data["data"]]
             url = data.get('next')
         else:
             print('Erreur:', response.status_code, response.reason)
             break
     
     return track_info
+
+
+def to_csv(track_info):
+    with open('data/tracks.csv', 'w', newline='') as csvfile :
+        writer = csv.writer(csvfile)
+        for i in range(len(track_info[0])):
+            writer.writerow([track_info[0][i], track_info[1][i]])
