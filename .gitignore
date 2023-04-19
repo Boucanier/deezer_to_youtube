@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # user data
-token.txt
-user_id.txt
+data/token.txt
+data/user_id.txt
 data/tracks.csv
