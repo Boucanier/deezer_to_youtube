@@ -54,7 +54,7 @@ def get_track_info(playlist_id):
             [track_info[3].append(track["duration"]) for track in data["data"]]
             url = data.get('next')
         else:
-            print('Erreur:', response.status_code, response.reason)
+            print('Error:', response.status_code, response.reason)
             break
     
     return track_info
