@@ -36,6 +36,14 @@ def search_tracks():
     return tracks
 
 
+def add_tracks(id, tracks, youtube):
+    ids = []
+    for e in tracks :
+        search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
+        ids.append(search_response["items"][0]["id"]["videoId"])
+    return ids
+
+
 def main():
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
@@ -50,8 +58,9 @@ def main():
     credentials = flow.run_local_server(port = 0)
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
-    # id = create_playlist(youtube, "deezer_to_youtube", "Here is a copy of your deezer playlist")
+    playlist_id = create_playlist(youtube, "deezer_to_youtube", "Here is a copy of your deezer playlist")
     tracks = search_tracks()
+    video_ids = add_tracks(playlist_id, tracks, youtube)
 
 if __name__ == "__main__":
     main()
