@@ -129,7 +129,4 @@ dmypy.json
 .pyre/
 
 # user data
-data/token.txt
-data/user_id.txt
-data/tracks.csv
-data/client_secret_id.json
+data/
