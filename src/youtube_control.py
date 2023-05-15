@@ -33,6 +33,7 @@ def search_tracks():
         spamreader = csv.reader(track_file, delimiter=',')
         for e in spamreader :
             tracks[e[0]] = e[1]
+    tracks.pop('Title')
     return tracks
 
 
