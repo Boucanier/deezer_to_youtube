@@ -63,5 +63,6 @@ def get_track_info(playlist_id):
 def to_csv(track_info):
     with open('data/tracks.csv', 'w', newline='') as csvfile :
         writer = csv.writer(csvfile)
+        writer.writerow(["Title", "Artist", "Album", "Length"])
         for i in range(len(track_info[0])):
             writer.writerow([track_info[0][i], track_info[1][i], track_info[2][i], track_info[3][i]])
