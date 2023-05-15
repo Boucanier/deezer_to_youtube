@@ -41,7 +41,22 @@ def add_tracks(id, tracks, youtube):
     for e in tracks :
         search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
         ids.append(search_response["items"][0]["id"]["videoId"])
-    return ids
+    for e in ids :
+        request = youtube.playlistItems().insert(
+            part='snippet',
+            body={
+                'snippet': {
+                    'playlistId': id,
+                    'position': 0,
+                    'resourceId': {
+                        'kind': 'youtube#video',
+                        'videoId': e
+                    }
+                }
+            }
+        )
+        response = request.execute()
+    return response
 
 
 def main():
@@ -60,7 +75,7 @@ def main():
 
     playlist_id = create_playlist(youtube, "deezer_to_youtube", "Here is a copy of your deezer playlist")
     tracks = search_tracks()
-    video_ids = add_tracks(playlist_id, tracks, youtube)
+    response = add_tracks(playlist_id, tracks, youtube)
 
 if __name__ == "__main__":
     main()
