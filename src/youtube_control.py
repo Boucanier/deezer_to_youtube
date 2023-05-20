@@ -1,14 +1,28 @@
+"""
+    This script is used to create a youtube playlist and add tracks to it
+"""
 import os
+import csv
 
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-import csv
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
 def create_playlist(youtube, title, description):
+    """
+        Create a youtube playlist
+
+        - Args :
+            - youtube : youtube api object
+            - title (str) : playlist title
+            - description (str) : playlist description
+            
+        - Returns :
+            - id (str) : playlist id
+    """
     request = youtube.playlists().insert(
         part="snippet,status",
         body={
@@ -28,6 +42,16 @@ def create_playlist(youtube, title, description):
 
 
 def search_tracks():
+    """
+        Read data/tracks.csv and return a dict of tracks
+        Dict format : {TITLE : ARTIST}
+
+        - Args :
+            - None
+        
+        - Returns :
+            - tracks (dict) : dict of tracks
+    """
     tracks = {}
     with open("data/tracks.csv", "r") as track_file :
         spamreader = csv.reader(track_file, delimiter=',')
@@ -38,6 +62,17 @@ def search_tracks():
 
 
 def add_tracks(id, tracks, youtube):
+    """
+        Search tracks on youtube and add them to the previously created playlist
+
+        - Args :
+            - id (str) : playlist id
+            - tracks (dict) : dict of tracks
+            - youtube : youtube api object
+
+        - Returns :
+            - None
+    """
     ids = []
     for e in tracks :
         search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
@@ -61,6 +96,7 @@ def add_tracks(id, tracks, youtube):
 
 
 def main():
+    
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
