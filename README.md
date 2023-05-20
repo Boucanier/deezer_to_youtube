@@ -18,7 +18,7 @@ Run _src/main.py_ to start the program. Then you will have to enter a deezer use
 
 Then you will have to chose between a new playlist or a saved playlist. If you chose a new playlist, you will have to chose among all the playlists related to you deezer account. Once you have chosen a playlist, its information will be saved in _data/tracks.csv_. Therefore, you will be able to chose this playlist later.
 
-As soon as you have chosen a playlist, you will be redirected to a google authentication page. You will have to log in with your google account and to accept the permissions. The program will then create a youtube playlist named _deezer to Youtube_ and will add all the tracks of the chosen playlist to it. It adds the most relevant video found for each track.
+As soon as you have chosen a playlist, you will be redirected to a google authentication page. You will have to log in with your google account and to accept the permissions. The program will then create a youtube playlist named __deezer\_to\_youtube__ and will add all the tracks of the chosen playlist to it. It adds the most relevant video found for each track.
 
 ## Note
 
