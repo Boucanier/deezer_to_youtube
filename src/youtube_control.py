@@ -37,7 +37,7 @@ def create_playlist(youtube, title, description):
         }
     )
     response = request.execute()
-    print("Created playlist : ", {response['snippet']['title']}, " - ID: " + str({response['id']}))
+    print("Created playlist :", {response['snippet']['title']}, "- ID:", str({response['id']}))
     return response['id']
 
 
@@ -135,9 +135,10 @@ def main():
     tracks = search_tracks()
 
     if tracks["Title"] in playlists :
-        id = playlists[tracks["Title"]]
-
-    playlist_id = create_playlist(youtube, tracks["Title"], "Here is a copy of your deezer playlist")
+        playlist_id = playlists[tracks["Title"]]
+        print("Playlist :", tracks["Title"], "- ID:", str(playlist_id))
+    else :
+        playlist_id = create_playlist(youtube, tracks["Title"], "Here is a copy of your deezer playlist")
     add_tracks(playlist_id, tracks, youtube)
 
 if __name__ == "__main__":
