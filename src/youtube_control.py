@@ -57,7 +57,6 @@ def search_tracks():
         spamreader = csv.reader(track_file, delimiter=',')
         for e in spamreader :
             tracks[e[0]] = e[1]
-    tracks.pop('Title')
     return tracks
 
 
@@ -74,31 +73,38 @@ def add_tracks(id, tracks, youtube):
             - None
     """
     save = {}
+    create_check = False
     
     if os.path.exists("data/historic.csv") :
         with open("data/historic.csv", "r") as save_file :
             spamreader = csv.reader(save_file, delimiter=',')
             for e in spamreader :
                 save[e[0]] = (e[1], e[2])
+            if save.pop('Title') == tracks['Title'] :
+                create_check = True
+
+    if create_check :
+        with open("data/historic.csv", "w") as save_file :
+            spamwriter = csv.writer(save_file, delimiter=',')
+            spamwriter.writerow(["Title", tracks['Title']])
 
     cpt = 0
     for e in tracks :
-        if e not in save or save[e] != tracks[e]:
+        if (e not in save or save[e] != tracks[e]) and e != "Title" :
             search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
             save[e] = (tracks[e], search_response["items"][0]["id"]["videoId"])
             print("get :", cpt+1, "/", len(tracks))
 
-            with open("data/historic.csv", "w") as save_file :
+            with open("data/historic.csv", "a") as save_file :
                 spamwriter = csv.writer(save_file, delimiter=',')
                 for e in save :
                     spamwriter.writerow([e, save[e]])
 
-            request = youtube.playlistItems().insert(
-                part = 'snippet', body = {'snippet' : {'playlistId' : id, 'position' : 0, 'resourceId' : {'kind' : 'youtube#video', 'videoId' : save[e][1][1]}}})
+            request = youtube.playlistItems().insert(part = 'snippet', body = {'snippet' : {'playlistId' : id, 'position' : 0, 'resourceId' : {'kind' : 'youtube#video', 'videoId' : save[e][1][1]}}})
 
             print("add :", cpt+1, "/", len(tracks))
             request.execute()
-            
+
             cpt += 1
 
 
