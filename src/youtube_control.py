@@ -80,13 +80,13 @@ def add_tracks(id, tracks, youtube):
             spamreader = csv.reader(save_file, delimiter=',')
             for e in spamreader :
                 save[e[0]] = (e[1], e[2])
-            if save.pop('Title') == tracks['Title'] :
+            if save.pop("Title") == tracks["Title"] :
                 create_check = True
 
     if create_check :
         with open("data/historic.csv", "w") as save_file :
             spamwriter = csv.writer(save_file, delimiter=',')
-            spamwriter.writerow(["Title", tracks['Title']])
+            spamwriter.writerow(["Title", tracks["Title"]])
 
     cpt = 0
     for e in tracks :
@@ -118,7 +118,7 @@ def main():
     api_version = "v3"
 
     assert(os.path.exists("data/client_secret_id.json", "No data/client_secret_id.json file found"))
-    
+
     client_secrets_file = "data/client_secret_id.json"
 
     # Get credentials and create an API client
@@ -126,8 +126,8 @@ def main():
     credentials = flow.run_local_server(port = 0)
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
-    playlist_id = create_playlist(youtube, "deezer_to_youtube", "Here is a copy of your deezer playlist")
     tracks = search_tracks()
+    playlist_id = create_playlist(youtube, tracks["Title"], "Here is a copy of your deezer playlist")
     add_tracks(playlist_id, tracks, youtube)
 
 if __name__ == "__main__":
