@@ -14,7 +14,7 @@ This project create a youtube playlist that contain tracks that are in a deezer 
 - __google-auth-oauthlib__ (_```pip install google-auth-oauthlib```_)
 - __google-auth-httplib2__ (_```pip install google-auth-httplib2```_)
 
-To install all these requirements on a Linux distribution, you can run the script _installation.sh_
+To install all these requirements on a Debian based Linux distribution, you can run the script _installation.sh_
 
 ## Description
 
