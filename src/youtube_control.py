@@ -116,6 +116,9 @@ def main():
 
     api_service_name = "youtube"
     api_version = "v3"
+
+    assert(os.path.exists("data/client_secret_id.json", "No data/client_secret_id.json file found"))
+    
     client_secrets_file = "data/client_secret_id.json"
 
     # Get credentials and create an API client
