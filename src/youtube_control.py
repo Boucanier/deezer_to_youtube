@@ -126,7 +126,17 @@ def main():
     credentials = flow.run_local_server(port = 0)
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
+    playlists = {}
+    playlists_response = youtube.playlists().list(part = "snippet", mine=True).execute()
+
+    for playlist in playlists_response["items"]:
+        playlists[playlist["snippet"]["title"]] = playlist["id"]
+
     tracks = search_tracks()
+
+    if tracks["Title"] in playlists :
+        id = playlists[tracks["Title"]]
+
     playlist_id = create_playlist(youtube, tracks["Title"], "Here is a copy of your deezer playlist")
     add_tracks(playlist_id, tracks, youtube)
 
