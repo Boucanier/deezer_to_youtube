@@ -14,11 +14,11 @@ This project create a youtube playlist that contain tracks that are in a deezer 
 - __google-auth-oauthlib__ (_```pip install google-auth-oauthlib```_)
 - __google-auth-httplib2__ (_```pip install google-auth-httplib2```_)
 
-To install all these requirements on a Debian based Linux distribution, you can run the script _installation.sh_
+To install all these requirements on a Debian based Linux distribution, you can run the script [_installation.sh_](installation.sh)
 
 ## Description
 
-Run _src/main.py_ to start the program. Then you will have to enter a deezer user id or to chose an already registered one (you can paste your user id in _data/user_id.txt_).
+Run [_src/main.py_](src/main.py) to start the program. Then you will have to enter a deezer user id or to chose an already registered one (you can paste your user id in _data/user_id.txt_).
 
 Then you will have to chose between a new playlist or a saved playlist. If you chose a new playlist, you will have to chose among all the playlists related to you deezer account. Once you have chosen a playlist, its information will be saved in _data/tracks.csv_. Therefore, you will be able to chose this playlist later.
 
