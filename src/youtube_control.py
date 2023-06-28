@@ -74,13 +74,27 @@ def add_tracks(id, tracks, youtube):
             - None
     """
     ids = []
+    save = {}
+    
+    if os.path.exists("data/historic.csv") :
+        with open("data/historic.csv", "r") as save_file :
+            spamreader = csv.reader(save_file, delimiter=',')
+            for e in spamreader :
+                save[e[0]] = e[1]
+
     cpt = 0
     for e in tracks :
-        search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
-        ids.append(search_response["items"][0]["id"]["videoId"])
-        print("get :", cpt+1, "/", len(tracks))
-        cpt += 1
-        
+        if e not in save or save[e] != tracks[e]:
+            search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
+            ids.append(search_response["items"][0]["id"]["videoId"])
+            print("get :", cpt+1, "/", len(tracks))
+            cpt += 1
+            save[e] = tracks[e]
+            with open("data/historic.csv", "w") as save_file :
+                spamwriter = csv.writer(save_file, delimiter=',')
+                for e in save :
+                    spamwriter.writerow([e, save[e]])
+
     for i in range(len(ids)) :
         request = youtube.playlistItems().insert(
             part='snippet',
