@@ -98,7 +98,7 @@ def add_tracks(id, tracks, youtube):
             with open("data/historic.csv", "a") as save_file :
                 spamwriter = csv.writer(save_file, delimiter=',')
                 for e in save :
-                    spamwriter.writerow([e, save[e]])
+                    spamwriter.writerow([e, save[e[0]], save[e[1]]])
 
             request = youtube.playlistItems().insert(part = 'snippet', body = {'snippet' : {'playlistId' : id, 'position' : 0, 'resourceId' : {'kind' : 'youtube#video', 'videoId' : save[e][1][1]}}})
 
@@ -139,6 +139,7 @@ def main():
         print("Playlist :", tracks["Title"], "- ID:", str(playlist_id))
     else :
         playlist_id = create_playlist(youtube, tracks["Title"], "Here is a copy of your deezer playlist")
+
     add_tracks(playlist_id, tracks, youtube)
 
 if __name__ == "__main__":
