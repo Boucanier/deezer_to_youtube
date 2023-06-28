@@ -74,9 +74,13 @@ def add_tracks(id, tracks, youtube):
             - None
     """
     ids = []
+    cpt = 0
     for e in tracks :
         search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
         ids.append(search_response["items"][0]["id"]["videoId"])
+        print("get :", cpt+1, "/", len(tracks))
+        cpt += 1
+        
     for i in range(len(ids)) :
         request = youtube.playlistItems().insert(
             part='snippet',
@@ -91,7 +95,7 @@ def add_tracks(id, tracks, youtube):
                 }
             }
         )
-        print(i+1, "/", len(ids))
+        print("add :", i+1, "/", len(ids))
         request.execute()
 
 
