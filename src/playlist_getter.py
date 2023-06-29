@@ -56,8 +56,9 @@ def deezer_menu(title_list, id_list):
             choice = -1
     
     playlist_id = id_list[choice]
+    playlist_name = title_list[choice]
     
-    return playlist_id
+    return playlist_id, playlist_name
 
 
 def get_track_info(playlist_id):
@@ -91,7 +92,7 @@ def get_track_info(playlist_id):
     return track_info
 
 
-def to_csv(track_info):
+def to_csv(track_info, playlist_name):
     """
         Save tracks info in a csv file
 
@@ -101,5 +102,6 @@ def to_csv(track_info):
     with open('data/tracks.csv', 'w', newline='') as csvfile :
         writer = csv.writer(csvfile)
         writer.writerow(["Title", "Artist", "Album", "Length"])
+        writer.writerow(["PLAYLIST_NAME", playlist_name])
         for i in range(len(track_info[0])):
             writer.writerow([track_info[0][i], track_info[1][i], track_info[2][i], track_info[3][i]])
