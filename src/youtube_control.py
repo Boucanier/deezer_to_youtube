@@ -57,10 +57,11 @@ def search_tracks():
         spamreader = csv.reader(track_file, delimiter=',')
         for e in spamreader :
             tracks[e[0]] = e[1]
+        tracks.pop("Title")
     return tracks
 
 
-def add_tracks(id, tracks, youtube):
+def add_tracks(id, playlist_name, tracks, youtube):
     """
         Search tracks on youtube and add them to the previously created playlist
 
@@ -80,17 +81,17 @@ def add_tracks(id, tracks, youtube):
             spamreader = csv.reader(save_file, delimiter=',')
             for e in spamreader :
                 save[e[0]] = (e[1], e[2])
-            if save.pop("Title") == tracks["Title"] :
+            if save.pop("PLAYLIST_NAME") == playlist_name :
                 create_check = True
 
     if create_check :
         with open("data/historic.csv", "w") as save_file :
             spamwriter = csv.writer(save_file, delimiter=',')
-            spamwriter.writerow(["Title", tracks["Title"]])
+            spamwriter.writerow(["PLAYLIST_NAME", playlist_name])
 
     cpt = 0
     for e in tracks :
-        if (e not in save or save[e] != tracks[e]) and e != "Title" :
+        if (e not in save or save[e] != tracks[e]) and e != "PLAYLIST_NAME" :
             search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
             save[e] = (tracks[e], search_response["items"][0]["id"]["videoId"])
             print("get :", cpt+1, "/", len(tracks))
@@ -108,7 +109,7 @@ def add_tracks(id, tracks, youtube):
             cpt += 1
 
 
-def main():
+def main(playlist_name):
     
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
@@ -134,13 +135,13 @@ def main():
 
     tracks = search_tracks()
 
-    if tracks["Title"] in playlists :
-        playlist_id = playlists[tracks["Title"]]
-        print("Playlist :", tracks["Title"], "- ID:", str(playlist_id))
+    if playlist_name in playlists :
+        playlist_id = playlists[playlist_name]
+        print("Playlist :", playlist_name, "- ID:", str(playlist_id))
     else :
-        playlist_id = create_playlist(youtube, tracks["Title"], "Here is a copy of your deezer playlist")
+        playlist_id = create_playlist(youtube, playlist_name, "Here is a copy of your deezer playlist")
 
-    add_tracks(playlist_id, tracks, youtube)
+    add_tracks(playlist_id, playlist_name, tracks, youtube)
 
 if __name__ == "__main__":
     main()

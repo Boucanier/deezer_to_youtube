@@ -51,4 +51,4 @@ if __name__ == "__main__" :
             print("csv format is : TITLE, ARTIST, ALBUM, DURATION (in s.)\n")
             choice = 0
     
-    youtube_control.main()
+    youtube_control.main(playlist_name)
