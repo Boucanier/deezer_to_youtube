@@ -80,36 +80,37 @@ def add_tracks(id, playlist_name, tracks, youtube):
         with open("data/historic.csv", "r") as save_file :
             spamreader = csv.reader(save_file, delimiter=',')
             for e in spamreader :
-                save[e[0]] = (e[1], e[2])
-            if save.pop("PLAYLIST_NAME") == playlist_name :
+                if e[0] != "PLAYLIST_NAME" :
+                    save[e[0]] = (e[1], e[2])
+            if not "PLAYLIST_NAME" in save or save["PLAYLIST_NAME"][0] != playlist_name :
                 create_check = True
 
-    if create_check :
+    if not os.path.exists("data/historic.csv") or create_check :
         with open("data/historic.csv", "w") as save_file :
             spamwriter = csv.writer(save_file, delimiter=',')
             spamwriter.writerow(["PLAYLIST_NAME", playlist_name])
 
     cpt = 0
+    max = len(save)
     for e in tracks :
         if (e not in save or save[e] != tracks[e]) and e != "PLAYLIST_NAME" :
             search_response = youtube.search().list(part="id",q = e + " " + tracks[e],type="video",maxResults=1).execute()
             save[e] = (tracks[e], search_response["items"][0]["id"]["videoId"])
-            print("get :", cpt+1, "/", len(tracks))
+            print("get :", cpt+1, "/", len(tracks) - max)
+
+            request = youtube.playlistItems().insert(part = 'snippet', body = {'snippet' : {'playlistId' : id, 'position' : 0, 'resourceId' : {'kind' : 'youtube#video', 'videoId' : save[e][1]}}})
+
+            print("add :", cpt+1, "/", len(tracks) - max)
+            request.execute()
 
             with open("data/historic.csv", "a") as save_file :
                 spamwriter = csv.writer(save_file, delimiter=',')
-                for e in save :
-                    spamwriter.writerow([e, save[e[0]], save[e[1]]])
-
-            request = youtube.playlistItems().insert(part = 'snippet', body = {'snippet' : {'playlistId' : id, 'position' : 0, 'resourceId' : {'kind' : 'youtube#video', 'videoId' : save[e][1][1]}}})
-
-            print("add :", cpt+1, "/", len(tracks))
-            request.execute()
+                spamwriter.writerow([e, save[e][0], save[e][1]])
 
             cpt += 1
 
 
-def main(playlist_name):
+def main():
     
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
@@ -118,7 +119,7 @@ def main(playlist_name):
     api_service_name = "youtube"
     api_version = "v3"
 
-    assert(os.path.exists("data/client_secret_id.json", "No data/client_secret_id.json file found"))
+    assert(os.path.exists("data/client_secret_id.json"), "No data/client_secret_id.json file found")
 
     client_secrets_file = "data/client_secret_id.json"
 
@@ -134,6 +135,8 @@ def main(playlist_name):
         playlists[playlist["snippet"]["title"]] = playlist["id"]
 
     tracks = search_tracks()
+
+    playlist_name = tracks["PLAYLIST_NAME"]
 
     if playlist_name in playlists :
         playlist_id = playlists[playlist_name]

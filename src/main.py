@@ -35,20 +35,20 @@ if __name__ == "__main__" :
         else :
             choice = 0
 
-    if choice == 1 :
-        list_title, list_id = pg.get_playlists(user_id)
-        playlist_id, playlist_name = pg.deezer_menu(list_title, list_id)
-        track_info = pg.get_track_info(playlist_id)
-        print(len(track_info[0]), "tracks")
-        pg.to_csv(track_info, playlist_name)
-    elif choice == 2 :
-        if os.path.exists("data/tracks.csv"):
-            print("Playlist found")
-        else :
-            print("No existing playlist")
-            print("Playlist must be saved in a csv file in tracks")
-            print("csv separator mst be \',\'")
-            print("csv format is : TITLE, ARTIST, ALBUM, DURATION (in s.)\n")
-            choice = 0
+        if choice == 1 :
+            list_title, list_id = pg.get_playlists(user_id)
+            playlist_id, playlist_name = pg.deezer_menu(list_title, list_id)
+            track_info = pg.get_track_info(playlist_id)
+            print(len(track_info[0]), "tracks")
+            pg.to_csv(track_info, playlist_name)
+        elif choice == 2 :
+            if os.path.exists("data/tracks.csv"):
+                print("Playlist found")
+            else :
+                print("No existing playlist")
+                print("Playlist must be saved in a csv file in tracks")
+                print("csv separator mst be \',\'")
+                print("csv format is : TITLE, ARTIST, ALBUM, DURATION (in s.)\n")
+                choice = 0
     
-    youtube_control.main(playlist_name)
+        youtube_control.main()
