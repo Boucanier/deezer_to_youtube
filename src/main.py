@@ -47,7 +47,7 @@ if __name__ == "__main__" :
             else :
                 print("No existing playlist")
                 print("Playlist must be saved in a csv file in tracks")
-                print("csv separator mst be \',\'")
+                print("csv separator must be \',\'")
                 print("csv format is : TITLE, ARTIST, ALBUM, DURATION (in s.)\n")
                 choice = 0
     
