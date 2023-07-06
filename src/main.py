@@ -41,6 +41,10 @@ if __name__ == "__main__" :
             track_info = pg.get_track_info(playlist_id)
             print(len(track_info[0]), "tracks")
             pg.to_csv(track_info, playlist_name)
+            
+            if os.path.exists("data/historic.csv"):
+                os.remove("data/historic.csv")
+
         elif choice == 2 :
             if os.path.exists("data/tracks.csv"):
                 print("Playlist found")
