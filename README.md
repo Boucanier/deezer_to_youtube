@@ -4,7 +4,7 @@
 ![Deezer](https://img.shields.io/badge/Deezer-FEAA2D?style=for-the-badge&logo=deezer&logoColor=white)
 ![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)
 
-This project create a youtube playlist that contain tracks that are in a deezer playlist.
+This project create a youtube playlist from tracks that are in a deezer playlist.
 
 ## Requirements
 
@@ -25,5 +25,7 @@ Then you will have to chose between a new playlist or a saved playlist. If you c
 As soon as you have chosen a playlist, you will be redirected to a google authentication page. You will have to log in with your google account and to accept the permissions. The program will then create a youtube playlist named __deezer\_to\_youtube__ and will add all the tracks of the chosen playlist to it. It adds the most relevant video found for each track.
 
 ## Note
+
+The deezer playlist that you want to copy should be public. 
 
 Since the google api has a requests quota per day, the program will not work with too long playlists. If you have a playlist with more than 100 tracks, you can split it in two playlists and then add them to the same youtube playlist.
