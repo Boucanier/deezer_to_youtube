@@ -26,6 +26,6 @@ As soon as you have chosen a playlist, you will be redirected to a google authen
 
 ## Note
 
-The deezer playlist that you want to copy should be public. 
+The deezer playlist that you want to copy must be public. 
 
-Since the google api has a requests quota per day, the program will not work with too long playlists. If you have a playlist with more than 100 tracks, you can split it in two playlists and then add them to the same youtube playlist.
+Since the google api has a requests quota per day, the program will not work with too long playlists.
