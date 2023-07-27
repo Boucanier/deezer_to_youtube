@@ -100,8 +100,8 @@ def add_tracks(id, playlist_name, tracks, youtube):
 
             request = youtube.playlistItems().insert(part = 'snippet', body = {'snippet' : {'playlistId' : id, 'position' : 0, 'resourceId' : {'kind' : 'youtube#video', 'videoId' : save[e][1]}}})
 
-            print("add :", cpt+1, "/", len(tracks) - max)
             request.execute()
+            print("add :", cpt+1, "/", len(tracks) - max)
 
             with open("data/historic.csv", "a") as save_file :
                 spamwriter = csv.writer(save_file, delimiter=',')
